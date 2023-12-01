@@ -1,6 +1,43 @@
 import React from "react";
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
+import { useState } from "react";
 
-const AddressComponent = () => {
+const AddressComponent = ({ onAddressSelect }) => {
+  const {
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: { componentRestrictions: { country: "us" } },
+    debounce: 300,
+    cache: 86400,
+  });
+
+  const [inputValue, setInputValue] = useState("");
+
+  const handleSelect = (description) => {
+    setInputValue(description); // Update local state
+    setValue(description, false); // Update the value managed by the hook
+    clearSuggestions();
+    onAddressSelect && onAddressSelect(description);
+  };
+
+  const renderSuggestions = () => {
+    return data.map(
+      ({
+        place_id,
+        structured_formatting: { main_text, secondary_text },
+        description,
+      }) => (
+        <li key={place_id} onClick={() => handleSelect(description)}>
+          <strong>{main_text}</strong> <small>{secondary_text}</small>
+        </li>
+      )
+    );
+  };
   return (
     <div className="rounded-sm bg-gradient-to-b from-zinc-50/70 to-white/90 shadow-lg p-6 w-3/5 max-w-4xl mt-5">
       <div className="mb-4 -mt-3.5">
@@ -24,16 +61,26 @@ const AddressComponent = () => {
         </span>
         <input
           type="text"
-          placeholder="Search for city, neighborhood, zipcode ..."
+          placeholder="Recherchez pour ville, quartier, code postal..."
           className="bg-transparent flex-1 border-none outline-none placeholder-gray-500 text-gray-700 p-2"
+          value={inputValue} // Use local state for the input value
+          onChange={(e) => {
+            setInputValue(e.target.value); // Update local state on change
+            setValue(e.target.value); // Update the value managed by the hook
+          }}
         />
+        {status === "OK" && (
+          <ul className="absolute mt-48 p-3 w-[500px] bg-white rounded-md shadow-lg z-10">
+            {renderSuggestions()}
+          </ul>
+        )}
         <button className="bg-[#c86b38] text-white rounded-lg px-6 py-2 ml-2 hover:bg-[#c86b38]/90 focus:outline-none focus:ring-2 focus:ring-[#c86b38] focus:ring-opacity-50 transition-all duration-300 ease-in-out">
-          Search
+          SUITE
         </button>
       </div>
       <div className="flex justify-between items-center mt-4 text-gray-600">
-        <span>Advance Search ↓</span>
-        <span>Over 2M properties | Without commission</span>
+        <span>Recherche précis ↓</span>
+        <span>Plus de 500K immobiliers | CIVISION</span>
       </div>
     </div>
   );
