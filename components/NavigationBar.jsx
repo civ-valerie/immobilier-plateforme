@@ -59,7 +59,7 @@ function Desktop({ className, ...props }) {
       onMouseMove={handleMouseMove}
       className={clsxm(
         "group relative p-2",
-        "rounded-md bg-gradient-to-b from-zinc-50/70 to-white/90",
+        "rounded-sm bg-gradient-to-b from-zinc-50/70 to-white/90",
         "shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur-md",
         "dark:from-zinc-900/70 dark:to-zinc-800/90 dark:ring-zinc-100/10",
         "[--spotlight-color:rgb(200_107_56_/_0.2)] dark:[--spotlight-color:rgb(217_249_157_/_0.07)]",
@@ -69,7 +69,7 @@ function Desktop({ className, ...props }) {
     >
       {/* Spotlight overlay */}
       <motion.div
-        className="pointer-events-none absolute -inset-px rounded-md opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="pointer-events-none absolute -inset-px rounded-sm opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{ background }}
         aria-hidden="true"
       />

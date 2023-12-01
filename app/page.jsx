@@ -7,7 +7,6 @@ import Link from "next/link";
 import Marquee from "react-fast-marquee";
 import AddressComponent from "@/components/AddressComponent";
 import { useLoadScript } from "@react-google-maps/api";
-import Map from "@/components/Map";
 
 const LandingPage = () => {
   return (
