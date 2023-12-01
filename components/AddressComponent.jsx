@@ -11,7 +11,7 @@ const AddressComponent = ({ onAddressSelect }) => {
     setValue,
     clearSuggestions,
   } = usePlacesAutocomplete({
-    requestOptions: { componentRestrictions: { country: "us" } },
+    requestOptions: { componentRestrictions: { country: "ca" } },
     debounce: 300,
     cache: 86400,
   });
@@ -39,7 +39,7 @@ const AddressComponent = ({ onAddressSelect }) => {
     );
   };
   return (
-    <div className="rounded-sm bg-gradient-to-b from-zinc-50/70 to-white/90 shadow-lg p-6 w-3/5 max-w-4xl mt-5">
+    <div className="rounded-sm bg-gradient-to-b from-zinc-50/70 to-white/90 shadow-lg p-6 w-3/5 max-w-4xl mt-5 z-50">
       <div className="mb-4 -mt-3.5">
         <button className="text-[#c86b38] border-b-4 border-[#c86b38] pb-2 pt-3 px-4 rounded-t-md focus:outline-none focus:ring-2 focus:ring-[#c86b38] focus:ring-opacity-50 transition-all duration-300 ease-in-out">
           Loyer mensuel
@@ -62,7 +62,7 @@ const AddressComponent = ({ onAddressSelect }) => {
         <input
           type="text"
           placeholder="Recherchez pour ville, quartier, code postal..."
-          className="bg-transparent flex-1 border-none outline-none placeholder-gray-500 text-gray-700 p-2"
+          className="bg-transparent flex-1 w-full border-none outline-none placeholder-gray-500 text-gray-700 p-2"
           value={inputValue} // Use local state for the input value
           onChange={(e) => {
             setInputValue(e.target.value); // Update local state on change
@@ -74,7 +74,7 @@ const AddressComponent = ({ onAddressSelect }) => {
             {renderSuggestions()}
           </ul>
         )}
-        <button className="bg-[#c86b38] text-white rounded-lg px-6 py-2 ml-2 hover:bg-[#c86b38]/90 focus:outline-none focus:ring-2 focus:ring-[#c86b38] focus:ring-opacity-50 transition-all duration-300 ease-in-out">
+        <button className="bg-[#c86b38] cursor-pointer text-white rounded-lg px-6 py-2 ml-2 hover:bg-[#c86b38]/90 focus:outline-none focus:ring-2 focus:ring-[#c86b38] focus:ring-opacity-50 transition-all duration-300 ease-in-out">
           SUITE
         </button>
       </div>

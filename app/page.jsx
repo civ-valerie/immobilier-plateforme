@@ -55,9 +55,10 @@ const LandingPage = () => {
             toute information disponsible sur les sites immobiliers canadiens.
           </p>
         </div>
-
         {/* Form */}
-        <AddressComponent />
+        <div className="relative z-50">
+          <AddressComponent />
+        </div>
         {/*
         <div className=" absolute">
           <Map />
