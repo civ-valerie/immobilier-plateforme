@@ -8,6 +8,7 @@ import Marquee from "react-fast-marquee";
 import MapSearch from "@/components/MapSearch";
 import { useLoadScript } from "@react-google-maps/api";
 import Map from "@/components/Map.tsx";
+import FormComponent from "@/components/FormComponent";
 
 const Sandbox = () => {
   const [coordinates, setCoordinates] = useState({
@@ -53,7 +54,9 @@ const Sandbox = () => {
           </div>
         </div>
         {/* Right column: Another form or content */}
-        <div className="flex-1">{/* Your other form or content here */}</div>
+        <div className="flex-1">
+          <FormComponent />
+        </div>
       </div>
     </div>
   );
