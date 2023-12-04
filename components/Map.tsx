@@ -5,14 +5,19 @@ import {
   CircleF,
 } from "@react-google-maps/api";
 import type { NextPage } from "next";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from "use-places-autocomplete";
 import useStore from "@/store/store"; // adjust the path as necessary
 
-const Map: NextPage = () => {
+interface MapProps {
+  address: string;
+  onAddressUpdate: (newAddress: string) => void;
+}
+
+const Map: NextPage<MapProps> = ({ address, onAddressUpdate }) => {
   const libraries = useMemo(() => ["places"], []);
 
   const mapCenter = useStore((state) => state.mapCenter);
@@ -27,10 +32,47 @@ const Map: NextPage = () => {
     []
   );
 
+  useEffect(() => {
+    console.log("The address is", address);
+    if (address) {
+      getGeocode({ address })
+        .then((results) => {
+          const { lat, lng } = getLatLng(results[0]);
+          console.log("Latitude and Longitude are:", lat, lng); // Add this line
+          setMapCenter(lat, lng);
+        })
+        .catch((error) => console.error("Error", error));
+    }
+  }, [address]);
+
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY as string,
     libraries: libraries as any,
   });
+
+  const reverseGeocode = (lat: number, lng: number) => {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+      if (status === "OK" && results) {
+        if (results[0]) {
+          const newAddress = results[0].formatted_address;
+          onAddressUpdate(newAddress);
+        }
+      } else {
+        console.error("Geocoder failed due to: " + status);
+      }
+    });
+  };
+
+  const onMarkerDragEnd = (event: google.maps.MapMouseEvent) => {
+    if (event.latLng) {
+      const newLat = event.latLng.lat();
+      const newLng = event.latLng.lng();
+      reverseGeocode(newLat, newLng);
+    } else {
+      console.error("Event latLng is null");
+    }
+  };
 
   if (!isLoaded) {
     return <p>Loading...</p>;
@@ -38,30 +80,19 @@ const Map: NextPage = () => {
 
   return (
     <div>
-      <div>
-        {/* render Places Auto Complete and pass custom handler which updates the state */}
-        <PlacesAutocomplete
-          onAddressSelect={(address) => {
-            getGeocode({ address: address }).then((results) => {
-              const { lat, lng } = getLatLng(results[0]);
-
-              setMapCenter(lat, lng);
-            });
-          }}
-        />
-      </div>
-
       <GoogleMap
         options={mapOptions}
         zoom={14}
         center={mapCenter}
         mapTypeId={google.maps.MapTypeId.ROADMAP}
-        mapContainerStyle={{ width: "400px", height: "400px" }}
+        mapContainerStyle={{ width: "600px", height: "400px" }}
         onLoad={(map) => console.log("Map Loaded")}
       >
         <MarkerF
           position={mapCenter}
           onLoad={() => console.log("Marker Loaded")}
+          draggable={true}
+          onDragEnd={onMarkerDragEnd}
         />
 
         {[1000].map((radius, idx) => {

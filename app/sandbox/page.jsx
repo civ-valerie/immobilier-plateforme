@@ -26,11 +26,26 @@ const Sandbox = () => {
     }
   };
 
+  const [randomNumber, setRandomNumber] = useState(null);
+
+  const handleRandomNumber = () => {
+    const min = 500;
+    const max = 1000;
+    const number = Math.floor(Math.random() * (max - min + 1)) + min;
+    setRandomNumber(number);
+  };
+
   return (
     <div className="bg-gradient-to-r from-gray-100 to-gray-300 min-h-screen h-auto relative">
       <div className="flex flex-1 justify-end md:justify-center">
         <NavigationBar.Mobile className="mt-5 pointer-events-auto relative z-50 md:hidden" />
         <NavigationBar.Desktop className="mt-5 pointer-events-auto relative z-50 hidden md:block" />
+      </div>
+      <div className="flex items-center flex-1 mt-10 justify-end md:justify-center">
+        <span className="text-3xl">Vous devriez loyer à</span>
+        <span className="text-6xl ml-4 inline text-[#c86b38]">
+          $ {randomNumber !== null ? randomNumber : "______"}
+        </span>
       </div>
 
       {/* Image */}
@@ -49,13 +64,13 @@ const Sandbox = () => {
       <div className="flex mt-8 mx-4">
         {/* Left column: Map and AddressComponent */}
         <div className="flex-1 flex flex-col items-center justify-center">
-          <div className="bg-white flex items-center justify-center p-2 shadow-lg rounded-sm">
+          <div className="bg-white flex items-center justify-center p-4 shadow-lg rounded-sm">
             <Map />
           </div>
         </div>
         {/* Right column: Another form or content */}
-        <div className="flex-1">
-          <FormComponent />
+        <div className="flex-1 flex items-center justify-center w-full">
+          <FormComponent onRandomNumber={handleRandomNumber} />
         </div>
       </div>
     </div>

@@ -9,8 +9,8 @@ import React from "react";
 
 export const navigationItems = [
   { href: "/", text: "La démo" },
-  { href: "/blog", text: "Comment ça marche" },
-  { href: "/projects", text: "Notre équipe" },
+  { href: "/informations", text: "Comment ça marche" },
+  { href: "/signin", text: "Connexion" },
 ];
 
 function NavItem({ href, children }) {
