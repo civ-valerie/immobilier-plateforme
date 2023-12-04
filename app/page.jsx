@@ -33,7 +33,7 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="bg-[#d0dcb4] top-0 right-0 left-0 min-h-screen absolute ">
+    <div className="bg-gradient-to-b from-[#d0dcb4] via-[#d0dcb4] to-sky-100 top-0 right-0 left-0 min-h-screen absolute ">
       <div className="flex fixed flex-1 w-full justify-center z-50">
         <NavigationBar.Mobile className="mt-5 pointer-events-auto relative z-50 md:hidden" />
         <NavigationBar.Desktop className="mt-5 pointer-events-auto relative z-50 hidden md:block" />
@@ -93,8 +93,9 @@ const LandingPage = () => {
           />
         </div>
         <SectionTitle
-          pretitle="Découvrez une estimation précise -"
-          title="Pourquoi utiliser notre modèle d'IA"
+          pretitle="Découvrez une estimation précise"
+          title="Pourquoi utiliser notre modèle d'IA -"
+          gradientColor="#d0dcb4"
         >
           Notre modèle d'intelligence artificielle innovant offre des
           estimations de prix pour des maisons et des appartements, basées sur
@@ -107,13 +108,18 @@ const LandingPage = () => {
         <SectionTitle
           pretitle="Témoignages"
           title="Voici ce que disent nos clients -"
+          gradientColor="#d0dcb4"
         >
           Les témoignages sont un excellent moyen d'augmenter la confiance et la
           notoriété de la marque. Utilisez cette section pour mettre en avant
           vos clients les plus populaires.
         </SectionTitle>
         <Testimonials />
-        <SectionTitle pretitle="FAQ" title="Questions fréquemment posées -">
+        <SectionTitle
+          pretitle="FAQ"
+          title="Questions fréquemment posées -"
+          gradientColor="#e0f2fe"
+        >
           Répondez ici aux questions possibles de vos clients, cela augmentera
           le taux de conversion ainsi que les demandes de support ou de chat.
         </SectionTitle>

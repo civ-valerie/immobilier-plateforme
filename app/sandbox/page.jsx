@@ -7,7 +7,7 @@ import Link from "next/link";
 import Marquee from "react-fast-marquee";
 import MapSearch from "@/components/MapSearch";
 import { useLoadScript } from "@react-google-maps/api";
-import Map from "@/components/Map.tsx";
+import MapAndAddress from "@/components/MapAndAddress.tsx";
 import FormComponent from "@/components/FormComponent";
 
 const Sandbox = () => {
@@ -42,9 +42,13 @@ const Sandbox = () => {
         <NavigationBar.Desktop className="mt-5 pointer-events-auto relative z-50 hidden md:block" />
       </div>
       <div className="flex items-center flex-1 mt-10 justify-end md:justify-center">
-        <span className="text-3xl">Vous devriez loyer à</span>
+        <span className="text-3xl">
+          {randomNumber !== null
+            ? "Vous devriez loyer à"
+            : "Completez le formulaire pour une estimation d'immobilier."}
+        </span>
         <span className="text-6xl ml-4 inline text-[#c86b38]">
-          $ {randomNumber !== null ? randomNumber : "______"}
+          {randomNumber !== null ? `$ ${randomNumber} ` : ""}
         </span>
       </div>
 
@@ -65,7 +69,7 @@ const Sandbox = () => {
         {/* Left column: Map and AddressComponent */}
         <div className="flex-1 flex flex-col items-center justify-center">
           <div className="bg-white flex items-center justify-center p-4 shadow-lg rounded-sm">
-            <Map />
+            <MapAndAddress />
           </div>
         </div>
         {/* Right column: Another form or content */}

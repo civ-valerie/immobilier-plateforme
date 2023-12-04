@@ -26,7 +26,7 @@ const Benefits = (props) => {
         </div>
 
         <div
-          className={`flex flex-wrap items-center w-full lg:w-1/2 ${
+          className={`flex flex-wrap bg-gradient-to-b from-zinc-50/70 to-white/90 shadow-lg p-12 items-center w-full lg:w-1/2 ${
             data.imgPos === "right" ? "lg:justify-end" : ""
           }`}
         >

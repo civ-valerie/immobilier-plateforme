@@ -10,7 +10,7 @@ import React from "react";
 export const navigationItems = [
   { href: "/", text: "La démo" },
   { href: "/informations", text: "Comment ça marche" },
-  { href: "/signin", text: "Connexion" },
+  { href: "/sandbox", text: "Sandbox" },
 ];
 
 function NavItem({ href, children }) {
@@ -99,7 +99,7 @@ function Mobile(props) {
   return (
     <Popover {...props}>
       <Popover.Button className="group flex items-center rounded-full bg-gradient-to-b from-zinc-50/20 to-white/80 px-4 py-2 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur-md focus:outline-none focus-visible:ring-2 dark:from-zinc-900/30 dark:to-zinc-800/80 dark:text-zinc-200 dark:ring-white/10 dark:hover:ring-white/20 dark:focus-visible:ring-yellow-500/80">
-        前往
+        Navigation
         {/* Chevron */}
         <svg
           viewBox="0 0 8 6"
@@ -158,7 +158,7 @@ function Mobile(props) {
                 </svg>
               </Popover.Button>
               <h2 className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                站内导航
+                Item
               </h2>
             </div>
             <nav className="mt-6">

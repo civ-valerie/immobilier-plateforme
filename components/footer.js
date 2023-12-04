@@ -15,7 +15,7 @@ export default function Footer() {
               {" "}
               <Link
                 href="/"
-                className="flex items-center space-x-2 text-2xl font-medium text-[#c86b38] dark:text-gray-100"
+                className="flex items-center space-x-2 text-2xl font-medium text-[#0a6a4c] dark:text-gray-100"
               >
                 <Image
                   src="/civision_inc_logo.png"

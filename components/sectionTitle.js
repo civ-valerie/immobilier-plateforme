@@ -15,12 +15,12 @@ const SectionTitle = (props) => {
         </div>
       )}
 
-      {props.title && (
+      {props.title && props.gradientColor && (
         <h2 className="max-w-full mt-3 text-3xl font-bold leading-snug tracking-tight text-gray-800 lg:leading-tight lg:text-4xl dark:text-white">
           <Marquee
             autoFill="true"
             gradient="true"
-            gradientColor="#d0dcb4"
+            gradientColor={props.gradientColor}
             className="text-8xl mt-4"
             speed="80"
             pauseOnHover="true"

@@ -11,7 +11,7 @@ const Testimonials = () => {
     <Container>
       <div className="grid gap-10 lg:grid-cols-2 xl:grid-cols-3">
         <div className="lg:col-span-2 xl:col-auto">
-          <div className="flex flex-col justify-between w-full h-full bg-gray-100 px-14 rounded-2xl py-14 dark:bg-trueGray-800">
+          <div className="flex flex-col justify-between w-full h-full bg-gray-100 px-14 rounded-md py-14 dark:bg-trueGray-800">
             <p className="text-2xl leading-normal ">
               L'estimation du modèle a été <Mark>très précise,</Mark>
               ce qui m'a permis de vite trouver un locataire pour mon
@@ -26,7 +26,7 @@ const Testimonials = () => {
           </div>
         </div>
         <div className="">
-          <div className="flex flex-col justify-between w-full h-full bg-gray-100 px-14 rounded-2xl py-14 dark:bg-trueGray-800">
+          <div className="flex flex-col justify-between w-full h-full bg-gray-100 px-14 rounded-md py-14 dark:bg-trueGray-800">
             <p className="text-2xl leading-normal ">
               Le modèle est <Mark>bien construit</Mark>
               avec les informations les plus récentes et pertinentes.
@@ -40,7 +40,7 @@ const Testimonials = () => {
           </div>
         </div>
         <div className="">
-          <div className="flex flex-col justify-between w-full h-full bg-gray-100 px-14 rounded-2xl py-14 dark:bg-trueGray-800">
+          <div className="flex flex-col justify-between w-full h-full bg-gray-100 px-14 rounded-md py-14 dark:bg-trueGray-800">
             <p className="text-2xl leading-normal ">
               Je fais confiance au modèle pour <Mark>tous mes besoins.</Mark>
             </p>
