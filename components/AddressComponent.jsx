@@ -8,8 +8,9 @@ import Link from "next/link";
 import Map from "@/components/Map";
 import { ArrowDown, ArrowUp, Stars } from "@/components/SVGIcons";
 import SimpleFormComponent from "@/components/SimpleFormComponent";
+import { checkout } from "@/stripe/checkout";
 
-const AddressComponent = () => {
+const AddressComponent = ({ onOpenWidget }) => {
   const {
     suggestions: { status, data },
     setValue,
@@ -46,7 +47,48 @@ const AddressComponent = () => {
     }
   }, [currentStep]);
 
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  const handleStripeCheckout = () => {
+    checkout({
+      lineItems: [{ price: "price_1OKjbrAs3Y77vkiWaEaXxaJV", quantity: 1 }],
+    });
+  };
+
+  useEffect(() => {
+    // Check localStorage when component mounts
+    const submitted = localStorage.getItem("formSubmitted") === "true";
+    setFormSubmitted(submitted);
+  }, []);
+
+  useEffect(() => {
+    // Update localStorage when formSubmitted state changes
+    if (formSubmitted) {
+      localStorage.setItem("formSubmitted", "true");
+    }
+  }, [formSubmitted]);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentSuccess = urlParams.get("paymentSuccess");
+
+    if (paymentSuccess) {
+      localStorage.removeItem("formSubmitted");
+      setFormSubmitted(false);
+    }
+
+    // Additionally, check if the form was previously submitted
+    const submitted = localStorage.getItem("formSubmitted") === "true";
+    setFormSubmitted(submitted);
+  }, []);
+
   const handleButtonClick = () => {
+    if (formSubmitted) {
+      // Redirect to Stripe if form already submitted
+      handleStripeCheckout();
+      return;
+    }
+
     if (currentStep === 1) {
       if (!mapDropdown) {
         setMapDropdown(true);
@@ -55,7 +97,8 @@ const AddressComponent = () => {
       }
     }
     if (currentStep === 2) {
-      setCurrentStep(3); // Proceed to Step 2
+      setCurrentStep(3); // Proceed to Step 3
+      setFormSubmitted(true); // Mark the form as submitted
     }
     // Add logic for other steps if needed
   };
@@ -142,12 +185,34 @@ const AddressComponent = () => {
       break;
     case 3:
       stepContent = (
-        <div className="flex items-center flex-1 mt-10 justify-end md:justify-center">
-          <span className="text-2xl">Vous devriez loyer à</span>
-          <span className="text-6xl ml-4 mr-4 inline text-[#c86b38]">
-            $ {randomNumber !== null ? randomNumber : "______"}
+        <div className="items-center grid grid-rows-3 mt-10 justify-end md:justify-center">
+          <div className="flex items-center justify-center">
+            <span className="text-2xl">Vous devriez loyer à</span>
+            <span className="text-6xl ml-4 mr-4 inline text-[#c86b38]">
+              $ {randomNumber !== null ? randomNumber : "______"}
+            </span>
+            <span className="text-2xl">par mois.</span>
+          </div>
+          <span className="flex mt-8 text-lg items-center justify-center">
+            ❗️ Vous avez utilisé votre essai gratuit. Pour un autre essai,
+            veuillez payez $50.00 ou bien contactez-nous pour un abonnement
+            illimité et accès à un dashboard.
           </span>
-          <span className="text-2xl">par mois.</span>
+          <div className="flex flex-col-2 items-center justify-center">
+            <button
+              className="bg-[#c86b38] cursor-pointer text-white rounded-lg px-6 py-2 mr-2 hover:bg-[#c86b38]/90 focus:outline-none focus:ring-2 focus:ring-[#c86b38] focus:ring-opacity-50 transition-all duration-300 ease-in-out flex items-center justify-center"
+              onClick={handleButtonClick}
+            >
+              <span>PAYER POUR UN AUTRE ESSAI</span>
+            </button>
+            OU
+            <button
+              onClick={onOpenWidget}
+              className="bg-[#c86b38] cursor-pointer text-white rounded-lg px-6 py-2 ml-2 hover:bg-[#c86b38]/90 focus:outline-none focus:ring-2 focus:ring-[#c86b38] focus:ring-opacity-50 transition-all duration-300 ease-in-out flex items-center justify-center"
+            >
+              <span>NOUS CONTACTER</span>
+            </button>
+          </div>
         </div>
       );
 
@@ -160,7 +225,6 @@ const AddressComponent = () => {
     <div className="rounded-sm bg-gradient-to-b from-zinc-50/70 to-white/90 shadow-lg p-6 w-1/2 mt-5 z-50">
       <div className="mb-4 -mt-3.5">
         <button
-          onClick={() => setCurrentStep(1)}
           className={`text-[#c86b38] ${
             currentStep === 1 ? "border-b-4" : ""
           } border-[#c86b38] pb-2 pt-3 px-4 rounded-t-md focus:outline-none focus:ring-2 focus:ring-[#c86b38] focus:ring-opacity-50 transition-all duration-300 ease-in-out`}
@@ -168,7 +232,6 @@ const AddressComponent = () => {
           Adresse d'immobilier →
         </button>
         <button
-          onClick={() => setCurrentStep(2)}
           className={`text-[#c86b38] ${
             currentStep === 2 ? "border-b-4" : ""
           } border-[#c86b38] pb-2 pt-3 px-4 rounded-t-md focus:outline-none focus:ring-2 focus:ring-[#c86b38] focus:ring-opacity-50 transition-all duration-300 ease-in-out`}
@@ -176,7 +239,6 @@ const AddressComponent = () => {
           Informations →
         </button>
         <button
-          onClick={() => setCurrentStep(3)}
           className={`text-[#c86b38] ${
             currentStep === 3 ? "border-b-4" : ""
           } border-[#c86b38] pb-2 pt-3 px-4 rounded-t-md focus:outline-none focus:ring-2 focus:ring-[#c86b38] focus:ring-opacity-50 transition-all duration-300 ease-in-out`}

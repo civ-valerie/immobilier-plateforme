@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, {
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+} from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { Disclosure, Transition } from "@headlessui/react";
 
-const PopupWidget = () => {
+const PopupWidget = forwardRef((props, ref) => {
   const {
     register,
     handleSubmit,
@@ -16,6 +21,18 @@ const PopupWidget = () => {
   const [Message, setMessage] = useState("");
 
   const userName = useWatch({ control, name: "name", defaultValue: "Someone" });
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const disclosureButtonRef = useRef(null);
+
+  useImperativeHandle(ref, () => ({
+    toggleOpen() {
+      if (disclosureButtonRef.current) {
+        disclosureButtonRef.current.click();
+      }
+    },
+  }));
 
   const onSubmit = async (data, e) => {
     console.log(data);
@@ -51,7 +68,10 @@ const PopupWidget = () => {
       <Disclosure>
         {({ open }) => (
           <>
-            <Disclosure.Button className="fixed z-40 flex items-center justify-center transition duration-300 bg-[#c86b38] rounded-full shadow-lg right-5 bottom-5 w-14 h-14 focus:outline-none hover:bg-[#c86b38] focus:bg-[#c86b38] ease">
+            <Disclosure.Button
+              ref={disclosureButtonRef}
+              className="fixed z-40 flex items-center justify-center transition duration-300 bg-[#c86b38] rounded-full shadow-lg right-5 bottom-5 w-14 h-14 focus:outline-none hover:bg-[#c86b38] focus:bg-[#c86b38] ease"
+            >
               <span className="sr-only">Open Contact form Widget</span>
               <Transition
                 show={!open}
@@ -123,17 +143,18 @@ const PopupWidget = () => {
                     <form onSubmit={handleSubmit(onSubmit)} noValidate>
                       <input
                         type="hidden"
-                        value="YOUR_ACCESS_KEY_HERE"
+                        name="access_key"
+                        value="c1eb3dd5-ae86-408a-a563-8522137209ef"
                         {...register("apikey")}
                       />
                       <input
                         type="hidden"
-                        value={`${userName} sent a message from Nextly`}
+                        value={`Un visiteur vous a envoyé un message sur la plateforme immobilière`}
                         {...register("subject")}
                       />
                       <input
                         type="hidden"
-                        value="Nextly Template"
+                        value="Plateforme immobilière"
                         {...register("from_name")}
                       />
                       <input
@@ -333,6 +354,6 @@ const PopupWidget = () => {
       </Disclosure>
     </div>
   );
-};
+});
 
 export default PopupWidget;

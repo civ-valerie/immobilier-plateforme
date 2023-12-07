@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { NavigationBar } from "@/components/NavigationBar.jsx";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,6 +12,7 @@ import FormComponent from "@/components/FormComponent";
 import Navbar from "../components/navbar";
 import SectionTitle from "../components/sectionTitle";
 import Hero from "../components/hero";
+import Typewriter from "typewriter-effect";
 
 import { benefitOne, benefitTwo } from "../components/data";
 import Video from "../components/video";
@@ -23,13 +24,12 @@ import Faq from "../components/faq";
 import PopupWidget from "../components/popupWidget";
 
 const LandingPage = () => {
-  const [randomNumber, setRandomNumber] = useState(null);
+  const widgetRef = useRef();
 
-  const handleRandomNumber = () => {
-    const min = 500;
-    const max = 1000;
-    const number = Math.floor(Math.random() * (max - min + 1)) + min;
-    setRandomNumber(number);
+  const handleOpenWidget = () => {
+    if (widgetRef.current) {
+      widgetRef.current.toggleOpen();
+    }
   };
 
   return (
@@ -55,30 +55,40 @@ const LandingPage = () => {
       <div className=" text-black dark:text-black mt-48 ml-16 z-20">
         {/* Title and Description */}
         <div>
-          <h1 className="text-4xl relative font-medium z-20">
-            À quel prix devrais-je vendre mon
+          <h1 className="text-4xl relative flex gap-2 font-medium z-20">
+            À quel prix devrais-je louer{" "}
+            <Typewriter
+              options={{
+                cursor: "",
+                strings: ["ma", "mon", "mon"],
+                autoStart: true,
+                loop: true,
+                delay: 90,
+                pauseFor: 6000,
+              }}
+            />
           </h1>
-          <div className="w-[700px] z-10 font-bold leading-snug tracking-tight text-gray-800 lg:leading-tight lg:text-4xl dark:text-white">
-            <Marquee
-              autoFill="true"
-              gradient="true"
-              gradientColor="#d0dcb4"
-              className="text-8xl mt-4 "
-              speed="80"
-              pauseOnHover="true"
-            >
-              {" "}
-              MAISON - APPARTEMENT - CONDO - CHAMBRE - STUDIO -{" "}
-            </Marquee>
+          <div className=" z-10 font-bold leading-snug tracking-tight text-gray-800 lg:leading-tight lg:text-4xl dark:text-white">
+            <h1 className="text-[70px] mt-3 font-extrabold leading-none">
+              <Typewriter
+                options={{
+                  strings: ["MAISON?", "APPARTEMENT?", "CONDO?"],
+                  autoStart: true,
+                  loop: true,
+                  delay: 90,
+                  pauseFor: 6000,
+                }}
+              />
+            </h1>
           </div>
-          <p className="text-lg relative mt-6 w-[550px] z-20">
+          <p className="text-lg relative mt-6 w-[600px] z-20">
             Consultez notre modèle d'intelligence artificiel, entrainé avec
             toute information disponsible sur les sites immobiliers canadiens.
           </p>
         </div>
         {/* Form */}
         <div className="relative z-20 mb-48">
-          <AddressComponent />
+          <AddressComponent onOpenWidget={handleOpenWidget} />
         </div>
 
         <div className="absolute top-16 right-0 z-0">
@@ -126,7 +136,7 @@ const LandingPage = () => {
         <Faq />
         <Cta />
         <Footer />
-        <PopupWidget />
+        <PopupWidget ref={widgetRef} />
       </div>
 
       <footer className="bg-[#c86b38] text-white p-4">
