@@ -51,7 +51,7 @@ const AddressComponent = ({ onOpenWidget }) => {
 
   const handleStripeCheckout = () => {
     checkout({
-      lineItems: [{ price: "price_1OKjbrAs3Y77vkiWaEaXxaJV", quantity: 1 }],
+      lineItems: [{ price: "price_1OKjNRAs3Y77vkiWhNVXglcw", quantity: 1 }],
     });
   };
 
