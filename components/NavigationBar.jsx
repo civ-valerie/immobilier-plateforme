@@ -5,16 +5,103 @@ import { clsxm } from "@zolplay/utils";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const navigationItems = [
   { href: "/", text: "La démo" },
   { href: "/informations", text: "Comment ça marche" },
-  { href: "/sandbox", text: "Sandbox" },
+  { href: "", text: "Plateforme" },
 ];
 
-function NavItem({ href, children }) {
+function LoginPopup({ isOpen, onClose }) {
+  const [password, setPassword] = useState("");
+  const [validationMessage, setValidationMessage] = useState("");
+  const router = useRouter();
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setValidationMessage("");
+  };
+
+  const handleAccessClick = () => {
+    if (password === "civision1995") {
+      console.log("redirecting you to sandbox");
+      router.push("/sandbox");
+    } else {
+      setValidationMessage("Le mot de passe ne correspond pas.");
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className={clsxm(
+        "group relative p-2 mt-5",
+        "rounded-sm bg-transparent",
+        "shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur-md",
+        "dark:from-zinc-900/70 dark:to-zinc-800/90 dark:ring-zinc-100/10",
+        "[--spotlight-color:rgb(200_107_56_/_0.2)] dark:[--spotlight-color:rgb(217_249_157_/_0.07)]"
+      )}
+    >
+      <button onClick={onClose} className="w-full flex justify-end">
+        x
+      </button>
+      <div className=" p-4 rounded">
+        {/* Your login form goes here */}
+        <span className="w-80 flex items-center justify-center">
+          Utilisez le mot de passe fourni par CIVISION INC. pour accéder à la
+          plateforme.
+        </span>
+
+        <div className="grid grid-flow-row mt-5">
+          <span>Mot de passe</span>
+
+          <input
+            type="password"
+            className="border p-1 my-2 bg-transparent border-[#c86b38] rounded-md shadow-sm"
+            onChange={handlePasswordChange}
+          />
+          {validationMessage && (
+            <span className="text-red-500 text-sm mb-2">
+              {validationMessage}
+            </span>
+          )}
+          <button
+            onClick={handleAccessClick}
+            className="bg-[#c86b38] cursor-pointer text-white rounded-md px-6 py-2 hover:bg-[#c86b38]/90 focus:outline-none focus:ring-2 focus:ring-[#c86b38] focus:ring-opacity-50 transition-all duration-300 ease-in-out flex items-center justify-center"
+          >
+            ACCÉDER
+          </button>
+        </div>
+        <span className="mt-5 w-80 flex items-center justify-center">
+          Veuillez contacter CIVISION INC. pour accès illimité.
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function NavItem({ href, text, onClick }) {
   const isActive = usePathname() === href;
+
+  // If an onClick handler is provided, use it instead of the Link component
+  if (onClick) {
+    return (
+      <li>
+        <button
+          onClick={onClick}
+          className={clsxm(
+            "relative block whitespace-nowrap px-3 py-2 transition",
+            "hover:text-[#c86b38] dark:hover:text-[#c86b38]"
+          )}
+        >
+          {text}
+        </button>
+      </li>
+    );
+  }
 
   return (
     <li>
@@ -27,7 +114,7 @@ function NavItem({ href, children }) {
             : "hover:text-[#c86b38] dark:hover:text-[#c86b38]"
         )}
       >
-        {children}
+        {text}
         {isActive && (
           <motion.span
             className="absolute inset-x-1 -bottom-px h-px bg-gradient-to-r from-lime-700/0 via-[#c86b38] to-lime-700/0 dark:from-lime-400/0 dark:via-[#c86b38] dark:to-lime-400/0"
@@ -53,6 +140,15 @@ function Desktop({ className, ...props }) {
     [mouseX, mouseY, radius]
   );
   const background = useMotionTemplate`radial-gradient(${radius}px circle at ${mouseX}px ${mouseY}px, var(--spotlight-color) 0%, transparent 65%)`;
+  const [isLoginPopupOpen, setLoginPopupOpen] = React.useState(false);
+
+  const handleConnexionClick = () => {
+    setLoginPopupOpen(true);
+  };
+
+  const closeLoginPopup = () => {
+    setLoginPopupOpen(false);
+  };
 
   return (
     <nav
@@ -75,12 +171,20 @@ function Desktop({ className, ...props }) {
       />
 
       <ul className="flex bg-transparent px-3 text-sm font-medium text-zinc-800 dark:text-zinc-200 ">
-        {navigationItems.map(({ href, text }) => (
-          <NavItem key={href} href={href}>
-            {text}
-          </NavItem>
-        ))}
+        {navigationItems.map((item) => {
+          if (item.text === "Plateforme") {
+            return (
+              <NavItem
+                key={item.href}
+                text={item.text}
+                onClick={handleConnexionClick}
+              />
+            );
+          }
+          return <NavItem key={item.href} href={item.href} text={item.text} />;
+        })}
       </ul>
+      <LoginPopup isOpen={isLoginPopupOpen} onClose={closeLoginPopup} />
     </nav>
   );
 }
